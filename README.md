@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 )
 
 Sample form:
-
+```
 from categories.models import Category
 from nav_tree import form_registry
 from nav_tree.forms import BaseUrlForm
@@ -39,3 +39,4 @@ class ArticleCategoryIndexForm(BaseUrlForm):
         url_name = 'article_archive_index'
 
 form_registry.register('article_archive_index', ArticleCategoryIndexForm)
+```
