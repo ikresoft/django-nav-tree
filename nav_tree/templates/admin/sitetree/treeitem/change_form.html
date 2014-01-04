@@ -1,0 +1,7 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_modify %}
+{% block content_title %}<h1>{{ title }} {% if not add %}"{{ original.title }}"{% endif %}</h1>{% endblock %}
+
+{% block content %}{{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}{% include "admin/sitetree/treeitem/breadcrumbs.html" %}{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+
+{% block extrahead %}{{ media }}
+<script type="text/javascript">
+	function send(form_id) {
+		var form = $(form_id);
+		console.log(form);
+		$.post(
+			'{% url 'form_view' %}',
+			form.serializeArray(),
+			function(responseText, responseStatus) {
+            	opener.dismissRelatedLookupPopup(window, responseText);     
+            }
+		);
+	}
+</script>
+{% endblock %}
+
+{% block content %}
+<ul>
+{% for app, forms in apps.items %}
+	<li>{{ app }}
+		<ul>
+			{% for name, form in forms.items %}
+			{% if form %}
+			<li>{{ form.Meta.verbose_name }}
+				<form id="id_{{ form.get_url_name }}">{% csrf_token %}
+				{{ form }}
+				<input type="button" value="Sacuvaj" onclick="send('#id_{{ form.get_url_name }}'); return false;" href="">
+				</form>
+			</li>
+			{% else %}
+				<li><a href="" onclick="opener.dismissRelatedLookupPopup(window, '{{ name }}'); return false;">{{ name }}</a></li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</li>
+{% endfor %}
+</ul>
+{% endblock %}
