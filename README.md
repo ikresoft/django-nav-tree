@@ -7,7 +7,7 @@ Small app for better selection url names in tree item admin. App support autodis
 
 Installation
 
-Put nav_tree before sitetree, in urls.py put 
+Put nav_tree before sitetree in INSTALLED_APPS, in urls.py put 
 
 from nav_tree import utils as nav_utils
 nav_utils.autodiscover()
