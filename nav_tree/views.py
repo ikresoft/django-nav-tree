@@ -47,7 +47,6 @@ def form_view(request):
                 media += apps[app][url_name].media
         for url in known_url_names:
             apps['Other'][url] = None
-        print apps
     context = {
         'apps': apps,
         'is_popup': request.GET.get('_popup', '') != '',
