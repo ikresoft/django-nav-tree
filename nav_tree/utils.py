@@ -1,5 +1,5 @@
 import imp
-from importlib import import_module
+from django.utils import importlib
 from django.conf import settings
 
 def autodiscover():
@@ -14,7 +14,7 @@ def autodiscover():
         # fails silently -- apps that do weird things with __path__ might
         # need to roll their own admin registration.
         try:
-            app_path = import_module(app).__path__
+            app_path = importlib.import_module(app).__path__
         except AttributeError:
             continue
 
@@ -29,6 +29,6 @@ def autodiscover():
 
         # Step 3: import the app's admin file. If this has errors we want them
         # to bubble up.
-        import_module("%s.url_forms" % app)
+        importlib.import_module("%s.url_forms" % app)
     # autodiscover was successful, reset loading flag.
     LOADING = False
