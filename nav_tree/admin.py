@@ -5,6 +5,16 @@ from django.utils.translation import ugettext_lazy as _
 from widgets import UrlWidget
 from sitetree.forms import TreeItemForm
 
+from django.conf import settings
+
+if 'modeltranslation' in settings.INSTALLED_APPS:
+    from modeltranslation.admin import TranslationAdmin, TabbedTranslationAdmin, TranslationTabularInline
+    class AdvTreeItemAdmin(TreeItemAdmin, TabbedTranslationAdmin):
+        pass
+else:
+    class AdvTreeItemAdmin(TreeItemAdmin):
+        pass
+
 class TreeItemForm(models.ModelForm):
     class Meta:
         widgets = {
@@ -12,7 +22,7 @@ class TreeItemForm(models.ModelForm):
         }
 
 # And our custom tree item admin model.
-class CustomTreeItemAdmin(TreeItemAdmin):
+class CustomTreeItemAdmin(AdvTreeItemAdmin):
     form = TreeItemForm
 
     fieldsets = (
@@ -36,6 +46,12 @@ class CustomTreeItemAdmin(TreeItemAdmin):
             'fields': ('hint', 'description', 'alias', 'urlaspattern')
         }),
     )
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super(CustomTreeItemAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+        if 'modeltranslation' in settings.INSTALLED_APPS:
+            self.patch_translation_field(db_field, field, **kwargs)
+        return field
 
 
 override_item_admin(CustomTreeItemAdmin)
