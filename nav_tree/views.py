@@ -39,6 +39,7 @@ def form_view(request):
                     if request.is_ajax():
                         return HttpResponse(apps[app][request.POST.get('url_name')].submit(), content_type="text/plain")
     else:
+        print form_registry.get_apps().items()
         for app, forms in form_registry.get_apps().items():
             apps[app] = {}
             for url_name, form in forms.items():
